@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Differential Equation Simulator</title>
+    <link rel="icon" href="/static/favicon.ico" type="image/x-icon">
+    <script src="/static/auth.js"></script>
+    <script src="/static/scripts.js" defer></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<script>
+    document.addEventListener("DOMContentLoaded", async () => {
+        document.getElementById("sort-by").addEventListener("change", () => loadSimulations("publicSimulations", { page: 1 }));
+        document.getElementById("sort-order").addEventListener("change", () => loadSimulations("publicSimulations", { page: 1 }));
+        document.getElementById("filter-status").addEventListener("change", () => loadSimulations("publicSimulations", { page: 1 }));
+        loadSimulations("publicSimulations");
+    })
+</script>
+
+<body class="bg-gray-100">
+    <nav
+        class="bg-gradient-to-r from-blue-700 via-blue-600 to-blue-500 shadow-md p-4 flex justify-between items-center text-white">
+        <div class="text-2xl font-extrabold tracking-wide cursor-pointer hover:scale-105 transition transform"
+            onclick="window.location.href='/'">
+            DESim
+        </div>
+
+        <div id="menu" class="flex items-center space-x-6 text-lg"></div>
+    </nav>
+
+    <h1 class="text-4xl font-bold text-gray-800 text-center pt-10">Public Simulations</h1>
+
+    <main class="p-6">
+        <div class="mb-2 flex space-x-2">
+            <select id="sort-by" class="p-1 border rounded">
+                <option value="">Sort by...</option>
+                <option value="simulation_id">UUID</option>
+                <option value="equation">Equation</option>
+                <option value="theta">Theta</option>
+                <option value="status">Status</option>
+                <option value="submit_time">Submitted</option>
+                <option value="complete_time">Completed</option>
+            </select>
+
+            <select id="sort-order" class="p-1 border rounded">
+                <option value="asc">Asc</option>
+                <option value="desc">Desc</option>
+            </select>
+
+            <select id="filter-status" class="p-1 border rounded">
+                <option value="">All Status</option>
+                <option value="queued">Queued</option>
+                <option value="running">Running</option>
+                <option value="finished">Finished</option>
+                <option value="failed">Failed</option>
+            </select>
+        </div>
+        <div id="publicSimulations">
+        </div>
+    </main>
+
+</body>
+
+</html>

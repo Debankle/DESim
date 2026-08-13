@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Differential Equation Simulator</title>
+    <link rel="icon" href="/static/favicon.ico" type="image/x-icon">
+    <script src="/static/scripts.js" defer></script>
+    <script src="/static/auth.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<script type="module">
+    document.addEventListener("DOMContentLoaded", async () => {
+        const isAdmin = await checkAdmin();
+        if (!isAdmin) {
+            alert("You must be an admin to access this page. Redirecting...");
+            window.location.href = "/me";
+            return;
+        }
+
+        document.getElementById("sort-by").addEventListener("change", () => loadSimulations("all-simulations", {}, false, true));
+        document.getElementById("sort-order").addEventListener("change", () => loadSimulations("all-simulations", {}, false, true));
+        document.getElementById("filter-status").addEventListener("change", () => loadSimulations("all-simulations", {}, false, true));
+
+        document.getElementById("user-sort-by").addEventListener("change", () => loadUsers("all-users"));
+        document.getElementById("user-sort-order").addEventListener("change", () => loadUsers("all-users"));
+        document.getElementById("user-filter-admin").addEventListener("change", () => loadUsers("all-users"));
+
+        const select = document.getElementById("admin-select");
+        const dashes = document.querySelectorAll(".dash-box");
+
+        select.addEventListener("change", () => {
+            dashes.forEach(f => f.classList.add("hidden"));
+            document.getElementById("dash-" + select.value).classList.remove("hidden");
+
+            if (select.value === "users") {
+                loadUsers("all-users");
+            } else if (select.value === "simulations") {
+                loadSimulations("all-simulations", {}, false, true);
+            }
+        });
+
+        loadUsers("all-users");
+    });
+</script>
+
+<body class="bg-gray-100">
+    <nav
+        class="bg-gradient-to-r from-blue-700 via-blue-600 to-blue-500 shadow-md p-4 flex justify-between items-center text-white">
+        <div class="text-2xl font-extrabold tracking-wide cursor-pointer hover:scale-105 transition transform"
+            onclick="window.location.href='/'">
+            DESim
+        </div>
+
+        <div id="menu" class="flex items-center space-x-6 text-lg"></div>
+    </nav>
+
+    <main class="p-6">
+        <h1 class="text-2xl font-bold mb-4">Admin Dashboard</h1>
+
+        <label for="admin-select" class="block mb-2">Choose dashboard view</label>
+        <select id="admin-select" class="mb-4 p-2 border rounded">
+            <option value="users">Users</option>
+            <option value="simulations">Simulations</option>
+        </select>
+
+        <div id="dash-container">
+            <div id="dash-users" class="dash-box">
+                <main class="p-6">
+                    <div class="mb-2 flex space-x-2">
+                        <select id="user-sort-by" class="p-1 border rounded">
+                            <option value="">Sort by...</option>
+                            <option value="id">ID</option>
+                            <option value="username">Username</option>
+                            <option value="isadmin">Admin</option>
+                        </select>
+
+                        <select id="user-sort-order" class="p-1 border rounded">
+                            <option value="asc">Asc</option>
+                            <option value="desc">Desc</option>
+                        </select>
+
+                        <select id="user-filter-admin" class="p-1 border rounded">
+                            <option value="">All Users</option>
+                            <option value="1">Admin</option>
+                            <option value="0">Not Admin</option>
+                        </select>
+                    </div>
+                    <div id="all-users"></div>
+                </main>
+            </div>
+
+            <div id="dash-simulations" class="dash-box hidden">
+                <main class="p-6">
+                    <div class="mb-2 flex space-x-2">
+                        <select id="sort-by" class="p-1 border rounded">
+                            <option value="">Sort by...</option>
+                            <option value="simulation_id">UUID</option>
+                            <option value="equation">Equation</option>
+                            <option value="theta">Theta</option>
+                            <option value="status">Status</option>
+                            <option value="submit_time">Submitted</option>
+                            <option value="complete_time">Completed</option>
+                        </select>
+
+                        <select id="sort-order" class="p-1 border rounded">
+                            <option value="asc">Asc</option>
+                            <option value="desc">Desc</option>
+                        </select>
+
+                        <select id="filter-status" class="p-1 border rounded">
+                            <option value="">All Status</option>
+                            <option value="queued">Queued</option>
+                            <option value="running">Running</option>
+                            <option value="finished">Finished</option>
+                            <option value="failed">Failed</option>
+                        </select>
+                    </div>
+                    <div id="all-simulations"></div>
+                </main>
+            </div>
+        </div>
+    </main>
+
+</body>
+
+</html>

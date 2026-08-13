@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Differential Equation Simulator</title>
+    <link rel="icon" href="/static/favicon.ico" type="image/x-icon">
+    <script src="/static/scripts.js" defer></script>
+    <script src="/static/auth.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<script>
+    requireAuth();
+</script>
+
+<body class="bg-gray-100">
+    <nav
+        class="bg-gradient-to-r from-blue-700 via-blue-600 to-blue-500 shadow-md p-4 flex justify-between items-center text-white">
+        <div class="text-2xl font-extrabold tracking-wide cursor-pointer hover:scale-105 transition transform"
+            onclick="window.location.href='/'">
+            DESim
+        </div>
+
+        <div id="menu" class="flex items-center space-x-6 text-lg"></div>
+    </nav>
+
+    <main class="p-6">
+        <h1 class="text-2xl font-bold mb-4">Submit Differential Equation Simulation</h1>
+
+        <label for="equation-select" class="block mb-2">Choose equation:</label>
+        <select id="equation-select" class="mb-4 p-2 border rounded">
+            <option value="heat">Heat Equation</option>
+            <option value="diffusionadvection">Diffusion-Advection</option>
+            <option value="wave">Wave Equation</option>
+        </select>
+
+
+        <div id="forms-container">
+            <form id="form-heat" class="sim-form">
+                <h2 class="text-xl mb-2">Heat Equation</h2>
+                <label>nx: <input type="number" name="nx" value="20"></label><br>
+                <label>ny: <input type="number" name="ny" value="20"></label><br>
+                <label>dx: <input type="number" step="0.01" name="dx" value="0.1"></label><br>
+                <label>dy: <input type="number" step="0.01" name="dy" value="0.1"></label><br>
+                <label>theta: <input type="number" step="0.1" name="theta" value="0.5"></label><br>
+                <label>dt: <input type="number" step="0.001" name="dt" value="0.01"></label><br>
+                <label>steps: <input type="number" name="steps" value="100"></label><br>
+                <label>alpha: <input type="number" step="0.1" name="alpha" value="1.0"></label><br>
+                <div class="ic-section mt-2"></div>
+                <div class="bc-section mt-2"></div>
+                <label>Private: <input type="checkbox" name="private"></label><br>
+                <button type="submit" class="bg-blue-500 text-white px-4 py-2 mt-2 rounded">Run Heat Simulation</button>
+            </form>
+
+            <form id="form-diffusionadvection" class="sim-form hidden">
+                <h2 class="text-xl mb-2">Diffusion-Advection</h2>
+                <label>nx: <input type="number" name="nx" value="20"></label><br>
+                <label>ny: <input type="number" name="ny" value="20"></label><br>
+                <label>dx: <input type="number" step="0.01" name="dx" value="0.1"></label><br>
+                <label>dy: <input type="number" step="0.01" name="dy" value="0.1"></label><br>
+                <label>theta: <input type="number" step="0.1" name="theta" value="0.5"></label><br>
+                <label>dt: <input type="number" step="0.001" name="dt" value="0.01"></label><br>
+                <label>steps: <input type="number" name="steps" value="100"></label><br>
+                <label>D: <input type="number" step="0.1" name="D" value="1.0"></label><br>
+                <label for="v">Velocity (v):</label>
+                <input type="number" step="any" id="v_x" placeholder="vx" style="width:80px;"> ,
+                <input type="number" step="any" id="v_y" placeholder="vy" style="width:80px;"><br>
+                <div class="ic-section mt-2"></div>
+                <div class="bc-section mt-2"></div>
+                <label>Private: <input type="checkbox" name="private"></label><br>
+                <button type="submit" class="bg-blue-500 text-white px-4 py-2 mt-2 rounded">Run
+                    Diffusion-Advection</button>
+            </form>
+
+            <form id="form-wave" class="sim-form hidden">
+                <h2 class="text-xl mb-2">Wave Equation</h2>
+                <label>nx: <input type="number" name="nx" value="20"></label><br>
+                <label>ny: <input type="number" name="ny" value="20"></label><br>
+                <label>dx: <input type="number" step="0.01" name="dx" value="0.1"></label><br>
+                <label>dy: <input type="number" step="0.01" name="dy" value="0.1"></label><br>
+                <label>theta: <input type="number" step="0.1" name="theta" value="0.5"></label><br>
+                <label>dt: <input type="number" step="0.001" name="dt" value="0.01"></label><br>
+                <label>steps: <input type="number" name="steps" value="100"></label><br>
+                <label>c (wave speed): <input type="number" step="0.1" name="c" value="1.0"></label><br>
+                <div class="ic-section mt-2"></div>
+                <div class="icv-section mt-2"></div>
+                <div class="bc-section mt-2"></div>
+                <label>Private: <input type="checkbox" name="private"></label><br>
+                <button type="submit" class="bg-blue-500 text-white px-4 py-2 mt-2 rounded">Run Wave Simulation</button>
+            </form>
+        </div>
+    </main>
+
+    <script src="/static/simulate.js" defer></script>
+
+</body>
+
+</html>

@@ -13,6 +13,10 @@ The core solver is a θ-method time integrator. For implicit steps, the resultin
 ## Stack
  
 Python (solver, API), Next.js, NestJS, PostgreSQL, AWS (ECS, SQS, S3, Cognito, CloudFront), AWS CDK
+
+## Cost & scale
+ 
+Put together a rough cost model for the whole system — landed at around $380/month for ~50 concurrent users, with S3 storage and Fargate compute making up most of that. Almost everything already scales automatically (ECS on CPU or queue backlog, CloudFront/ALB out of the box), so getting to something like 10,000 concurrent users would mostly be configuration rather than a redesign — splitting the simulation queue into small/medium/large tiers with their own scaling policies, and adding regional ECS clusters and RDS replicas behind Route 53 latency-based routing. Access follows least-privilege IAM roles per service, with everything except the UI/API sitting in a private VPC with no direct internet access.
  
 ## Note
  

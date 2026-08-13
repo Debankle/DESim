@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Redirecting...</title>
+</head>
+<body>
+  <script>
+    (async () => {
+      const params = new URLSearchParams(window.location.search);
+      const code = params.get("code");
+      const state = params.get("state");
+      const error = params.get("error");
+
+      if (error) {
+        alert(`Login failed: ${error}`);
+        window.location.href = "/login";
+        return;
+      }
+
+      if (!code) {
+        alert("Missing authorization code");
+        window.location.href = "/login";
+        return;
+      }
+
+      try {
+        const res = await fetch("/v1/oauth2/callback?" + new URLSearchParams({ code, state }), {
+          method: "GET",
+          credentials: "include"
+        });
+
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        const tokens = await res.json();
+
+        localStorage.setItem("token", tokens.id_token);
+        localStorage.setItem("access_token", tokens.access_token);
+        window.location.href = "/me";
+      } catch (err) {
+        console.error("Error during callback:", err);
+        alert("Login failed. Please try again.");
+        window.location.href = "/login";
+      }
+    })();
+  </script>
+</body>
+</html>
